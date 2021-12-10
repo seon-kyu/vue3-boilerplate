@@ -1,9 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import Home from "../views/Home.vue";
 import { auth } from "./middleware";
 
-const loadView = (path: string) => () =>
-  import(/* webpackChunkName: "view-[request]" */ `@/views/${path}.vue`);
+const loadView = (path: string) => () => import(/* webpackChunkName: "view-[request]" */ `@/views/${path}.vue`);
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,19 +19,20 @@ const routes: Array<RouteRecordRaw> = [
     path: "/about",
     name: "About",
     component: loadView("About"),
+    // beforeEnter: [auth, auth],
+  },
+  {
+    path: "/home",
+    name: "Home",
+    component: loadView("Home"),
     beforeEnter: auth,
   },
   {
     path: "/",
     name: "App",
     component: loadView("App"),
-    beforeEnter: auth,
+    // beforeEnter: auth,
     children: [
-      {
-        path: "home",
-        name: "home",
-        component: loadView("Home"),
-      },
       {
         path: "/:pathMatch(.*)*",
         name: "notfound",
